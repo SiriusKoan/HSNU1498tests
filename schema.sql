@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS tests (
+    id  INTEGER PRIMARY KEY AUTOINCREMENT,
+    time    DATETIME    NOT NULL,
+    subject TEXT    NOT NULL,
+    content TEXT    NOT NULL
+);
