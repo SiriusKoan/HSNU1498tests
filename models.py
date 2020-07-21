@@ -2,9 +2,10 @@ import calendar
 import sqlite3 as sql
 
 class CustomHTMLCalendar(calendar.HTMLCalendar):
-    def __init__(self, firstweekday, time):
+    def __init__(self, firstweekday, time, subject_colors):
         super(CustomHTMLCalendar, self).__init__()
         self.time = time
+        self.subject_colors = subject_colors
     def formatday(self, day, weekday):
         """
         Return a day as a table cell.
@@ -13,50 +14,45 @@ class CustomHTMLCalendar(calendar.HTMLCalendar):
             # day outside month
             return '<td class="%s">&nbsp;</td>' % self.cssclass_noday
         else:
-            tests_list = make_tests_list(get_tests(self.time + format(day, '=02')))
+            tests_list = make_tests_list(get_tests(self.time + format(day, '=02')), self.subject_colors)
             return '<td class="%s">%d %s</td>' % (self.cssclasses[weekday], day, tests_list)
-    def formatyear(self, theyear, width=3):
+    def formatmonth(self, theyear, themonth, withyear=True):
         """
-        Return a formatted year as a table of tables.
+        Return a formatted month as a table.
         """
-        January = 1
         v = []
         a = v.append
-        width = max(width, 1)
-        a('<table border="0" cellpadding="10" cellspacing="10" class="%s">' %
-          self.cssclass_year)
+        a('<table border="1" cellpadding="20" cellspacing="0" class="%s">' % (
+            self.cssclass_month))
         a('\n')
-        a('<tr><th colspan="%d" class="%s">%s</th></tr>' % (
-            width, self.cssclass_year_head, theyear))
-        for i in range(January, January+12, width):
-            # months in this row
-            months = range(i, min(i+width, 13))
-            a('<tr>')
-            for m in months:
-                a('<td>')
-                a(self.formatmonth(theyear, m, withyear=False))
-                a('</td>')
-            a('</tr>')
+        a(self.formatmonthname(theyear, themonth, withyear=withyear))
+        a('\n')
+        a(self.formatweekheader())
+        a('\n')
+        for week in self.monthdays2calendar(theyear, themonth):
+            a(self.formatweek(week))
+            a('\n')
         a('</table>')
+        a('\n')
         return ''.join(v)
 
-def make_calendar(year, month):
-    cal = CustomHTMLCalendar(firstweekday = 7, time = format(year, '=02') + '-' + format(month, '=02') + '-')
+def make_calendar(year, month, subject_colors):
+    # default: current month
+    cal = CustomHTMLCalendar(firstweekday = 7, time = format(year, '=02') + '-' + format(month, '=02') + '-', subject_colors = subject_colors)
     return cal.formatmonth(year, month)
 
-def make_tests_list(tests):
+def make_tests_list(tests, subject_colors):
     html = '<ol style="margin: 0px">'
     for test in tests:
-        html += '<li>%s</li>'%test[1] # test[1]: content
+        html += '<li style="color: %s">%s</li>'%(subject_colors[test[0]], test[1])
     html += '</ol>'
     return html
 
 def get_tests(time):
     # time format: '2020-07-01'
-    # [[date, subject, content], ...]
     con = sql.connect('data.db')
     cur = con.cursor()
     cur.execute('SELECT subject, content FROM tests WHERE time = ?', (time,))
     tests = cur.fetchall()
     con.close()
-    return tests # needs editing format
+    return tests
