@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>admin</title>
+</head>
+<body>
+    <form action="admin" method="POST">
+        <div>
+            <span>Time: </span>
+            <input type="date" name="time" required>
+        </div>
+        <div>
+            <span>Subject: </span>
+            <select name="subject" id="subject" required>
+                <option value="Chinese">Chinese</option>
+                <option value="English">English</option>
+                <option value="Math">Math</option>
+                <option value="Physics">Physics</option>
+                <option value="Chemical">Chemical</option>
+                <option value="EarthScience">EarthScience</option>
+                <option value="Biology">Biology</option>
+            </select>
+        </div>
+        <div>
+            <span>Content: </span>
+            <input type="text" name="content" required>
+        </div>
+        <input type="password" name="pin" required>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
