@@ -2,9 +2,9 @@ PIN = ''
 subject_colors = {
     "English": "red",
     "Math": "green",
-    "Chinese": "red",
+    "Chinese": "purple",
     "Physics": "blue",
     "Chemical": "lightblue",
     "EarthScience": "brown",
-    "Biology": "green",
+    "Biology": "lightgreen",
 }
