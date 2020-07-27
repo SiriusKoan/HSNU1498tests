@@ -1,4 +1,4 @@
-PIN = ''
+PIN = ""
 subject_colors = {
     "English": "red",
     "Math": "green",

@@ -19,10 +19,9 @@ class CustomHTMLCalendar(calendar.HTMLCalendar):
             tests_list = make_tests_list(
                 get_tests(self.time + format(day, "=02")), self.subject_colors
             )
-            return '<td class="%s" style="text-align: left; vertical-align: top;"><b>%d</b> %s</td>' % (
-                self.cssclasses[weekday],
-                day,
-                tests_list,
+            return (
+                '<td class="%s" style="text-align: left; vertical-align: top;"><b>%d</b> %s</td>'
+                % (self.cssclasses[weekday], day, tests_list,)
             )
 
     def formatmonth(self, theyear, themonth, withyear=True):
@@ -51,9 +50,9 @@ class CustomHTMLCalendar(calendar.HTMLCalendar):
 def make_calendar(year, month, subject_colors):
     # default: current month
     cal = CustomHTMLCalendar(
-        firstweekday = 7,
+        firstweekday=7,
         time=format(year, "=02") + "-" + format(month, "=02") + "-",
-        subject_colors = subject_colors,
+        subject_colors=subject_colors,
     )
     return cal.formatmonth(year, month)
 
